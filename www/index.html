@@ -1,18 +1,60 @@
 <!DOCTYPE html>
+<script type='text/javascript' src='js/knockout-3.5.1.js'></script>
 <html>
 <head>
     <title>To-Do List</title>
 </head>
 <body>
-    <h1>To-Do List</h1>
+    <h2>To-Do List</h2>
 
     <table>
-        <thead><tr>
-            <th>Task</th><th>Complete</th><th>Delete</th>
-        </tr></thead>
+        <thead>
+            <tr>
+                <th>Complete</th>
+                <th>Task</th>
+                <th>Delete</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: tasks">
+            <tr>
+                <td><input type="checkbox" data-bind="checked: box"></input></td>
+                <td><input data-bind="value: description" /></td>
+                <td><a href="#" data-bind="click: $root.removeTask">Delete</a></td>
+            </tr>
+        </tbody>
     </table>
 
-    <button>Add Task</button>
+    <button data-bind="click: addTask, enable: tasks().length < 20">Add Task</button>
 
+
+    <script>
+    // Tasks Function
+    function Tasks(description, bool) {
+        var self = this;
+        self.description = description;
+        self.box = ko.observable(bool);
+    }
+
+    // Overall viewmodel for this screen, along with initial state
+    function TasksViewModel() {
+        var self = this;
+
+        // Editable data
+        self.tasks = ko.observableArray([
+            new Tasks("Wake Up", true),
+            new Tasks("Create To-Do List", false)
+        ]);
+
+        // Operations
+        self.addTask = function () {
+            self.tasks.push(new Tasks("", false));
+        }
+
+        self.removeTask = function (task) { self.tasks.remove(task) }
+        }
+
+    ko.applyBindings(new TasksViewModel());
+    </script>
 </body>
 </html>
