@@ -1,3 +1,3 @@
 # SimpleToDo
 
-This is a simple Android To-Do list
+This is a simple To-Do list application for Android
